@@ -1,0 +1,16 @@
+matplotlib==3.9.4
+matplotlib-inline==0.1.7
+numpy==2.0.2
+opt_einsum==3.4.0
+pandas==2.2.3
+pylatexenc==2.10
+qiskit==0.38.0
+qiskit-aer==0.11.0
+qiskit-ibmq-provider==0.19.2
+qiskit-terra==0.21.2
+scikit-learn==1.6.0
+scipy==1.13.1
+seaborn==0.13.2
+sympy==1.13.1
+mpi4py
+PyHessian

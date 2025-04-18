@@ -1,0 +1,58 @@
+Bootstrap: localimage
+From: ubuntu_22.04.sif
+
+%environment
+    export DEBIAN_FRONTEND=noninteractive
+    export MAKEFLAGS="-j1"
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    export MAKEFLAGS="-j1"
+    apt-get -y update
+    apt-get -y upgrade
+    apt-get install -y --no-install-recommends libfabric1 rdma-core libucx0
+    apt-get install -y --no-install-recommends gcc g++ cmake
+    apt-get install -y --no-install-recommends python3 python3-pip
+    apt-get install -y --no-install-recommends wget git locales ca-certificates
+    apt-get install -y --no-install-recommends openmpi-bin openmpi-common libopenmpi-dev libmpich-dev
+    apt-get install -y --no-install-recommends libibverbs1 librdmacm1 ibverbs-utils
+    apt-get install -y --no-install-recommends libboost-program-options-dev
+    apt-get install -y --no-install-recommends build-essential
+    apt-get install -y --no-install-recommends nvidia-cuda-toolkit
+    apt-get install -y python3.10-dev
+    apt-get clean
+    localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
+    python3 -m pip install --no-cache-dir --upgrade pip wheel
+    pip install --no-cache-dir scikit-build
+    cd /tweedledum/
+    pip install .
+    cd ../
+    pip install --no-cache-dir notebook
+    pip install --no-cache-dir jupyterlab
+    pip install --no-cache-dir tqdm
+    pip install --no-cache-dir qiskit==0.38.0
+    pip install --no-cache-dir torch torchvision torchaudio  --index-url https://download.pytorch.org/whl/cu126
+    python3 -m pip install --prefer-binary -r /requirements.txt # %files でコピーした場合
+    pip install --no-cache-dir torchquantum==0.1.7
+
+
+
+%environment
+    export LANG=ja_JP.UTF-8
+    export LANGUAGE=ja_JP:ja
+    export LC_ALL=ja_JP.UTF-8
+    export TZ=JST-9
+    export TERM=xterm
+    export PYTHONIOENCODING=UTF-8
+
+%files
+    requirements_miyabi_torch26.txt /requirements.txt
+    tweedledum /tweedledum 
+
+%runscript
+    # apptainer run で実行した際のデフォルト動作 (例: Python起動)
+
+
+%labels
+    Author Yoshiaki Kawase
+    BaseImage ubuntu:22.04 (via ubuntu_22.04.sif)
